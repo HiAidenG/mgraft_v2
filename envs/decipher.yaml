@@ -1,0 +1,12 @@
+name: decipher
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - r-base>=4.4
+  - bioconductor-decipher
+  - bioconductor-biostrings
+  - r-optparse
+  - r-dplyr
+  - r-tidyr

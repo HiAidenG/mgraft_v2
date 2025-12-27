@@ -1,0 +1,10 @@
+name: mgraft_v2_python_base
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.10
+  - pandas>=1.5
+  - biopython>=1.79
+  - numpy>=1.21

@@ -1,0 +1,8 @@
+cluster: "bash profiles/slurm/submit.sh"
+jobs: 100
+latency-wait: 60
+use-conda: true
+printshellcmds: true
+restart-times: 0
+
+snakemake -s /net/bq-storage/ag-khedkar/aiden/mgraft_v2/workflows/defensefinder.smk --executor slurm --configfile /net/bq-storage/ag-khedkar/aiden/mgraft_v2/config.yml --use-conda --latency-wait 60 --printshellcmds --restart-times 0 -j 100 --default-resources mem_mb=8000 runtime=120 --shadow-prefix /tmp --rerun-incomplete

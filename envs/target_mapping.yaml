@@ -1,0 +1,10 @@
+name: mgraft_v2_target_mapping
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.10
+  - pandas>=1.5
+  - biopython>=1.79
+  - blast>=2.12

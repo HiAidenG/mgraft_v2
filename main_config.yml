@@ -1,0 +1,96 @@
+# mgraft_v2 Test2 Configuration (10 random genomes)
+
+# ======================== Paths ========================
+output_dir: "/Users/aidenh20/Desktop/AGKhedkar/mgraft_v2/test2_output"
+logs_dir: "/Users/aidenh20/Desktop/AGKhedkar/mgraft_v2/test2_output/logs"
+samplesheet: "/Users/aidenh20/Desktop/AGKhedkar/mgraft_v2/test2/samplesheet.tsv"
+
+rebase_db: "/Users/aidenh20/Desktop/AGKhedkar/mgraft_v2/databases/rebase/rebase.dmnd"
+vfdb_db: "/Users/aidenh20/Desktop/AGKhedkar/mgraft_v2/databases/vfdb/vfdb.dmnd"
+
+# ======================== DefenseFinder Settings ========================
+defensefinder:
+  extra_args: ""
+  threads: 8
+
+# ======================== CRISPRDetect Settings ========================
+crisprdetect:
+  quality_cutoff: 0  # Minimum array quality score (0 for max sensitivity)
+  min_repeats: 2     # Minimum number of repeats required
+  threads: 4
+
+# ======================== Array Assignment Settings ========================
+assign_arrays:
+  max_distance_to_cas: 10000
+  revcomp_if_cas_opposite: true  # Reverse-complement arrays when on opposite strand from assigned cas system
+
+# ======================== RM System Alignment Settings ========================
+query_rebase:
+  threads: 8
+  # Global defaults (used when type-specific config is missing)
+  min_identity: 100.0
+  min_query_coverage: 90.0
+  min_subject_coverage: 90.0
+  evalue: 1e-10
+  
+  type_II:
+    min_identity: 100.0
+    min_query_coverage: 90.0
+    min_subject_coverage: 90.0
+    evalue: 1e-10
+  
+  type_IIG:
+    min_identity: 100.0
+    min_query_coverage: 90.0
+    min_subject_coverage: 90.0
+    evalue: 1e-10
+
+  type_IV:
+    # Type IV systems have no recognition site - skip alignment
+    skip_alignment: true
+
+# ======================== VFDB Alignment Settings ========================
+query_vfdb:
+  threads: 8
+  min_identity: 90.0
+  min_coverage: 80.0
+
+# ======================== MGE Clustering Settings ========================
+# Cluster MGEs using vclust for deduplication
+mge_clustering:
+  enabled: true
+  threads: 4
+  
+  prefilter:
+    identity: 0.95
+  
+  align:
+    outfmt: "lite"
+  
+  cluster:
+    algorithm: "leiden"
+    metric: "ani"
+    ani_threshold: 0.95
+    query_coverage: 0.85
+    ref_coverage: 0.85
+    min_cluster_size: 2
+
+# ======================== Summary Table Settings ========================
+# Select which summary tables to generate (all by default)
+summary:
+  # Tables to aggregate (default: all)
+  tables:
+    - cas_systems
+    - crispr_arrays
+    - crispr_spacers
+    - defense_systems
+    - rm_systems
+    - virulence_genes
+    - mges
+  # Per-genome summary table (default: true)
+  genome_summary: true
+
+
+# ======================== Debug Settings ========================
+# Retain intermediate files from DefenseFinder and CRISPRDetect for debugging
+retain_intermediates: true

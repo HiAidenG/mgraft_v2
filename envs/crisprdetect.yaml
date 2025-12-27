@@ -1,0 +1,15 @@
+name: mgraft_v2_crisprdetect
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.10
+  - perl>=5.26
+  - clustalw>=2.1
+  - emboss>=6.6  # provides water, seqret
+  - viennarna>=2.4  # provides RNAfold
+  - cd-hit>=4.8
+  - blast>=2.12  # provides blastn
+  - biopython>=1.79
+  - pandas>=1.5
