@@ -1,0 +1,21 @@
+name: mgraft_crisprdetect
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  # CRISPRDetect 3.0 dependencies
+  - perl>=5.26
+  - perl-bioperl>=1.7
+  - perl-list-moreutils
+  - perl-parallel-forkmanager
+  # Alignment tools
+  - muscle>=3.8
+  - cd-hit>=4.8
+  - clustalw>=2.1
+  # BLAST
+  - blast>=2.12
+  # RNA structure
+  - viennarna>=2.4
+  # EMBOSS tools
+  - emboss>=6.6

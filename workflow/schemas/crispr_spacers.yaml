@@ -1,0 +1,72 @@
+name: crispr_spacers
+description: CRISPR spacer sequences parsed from CRISPR detection tools
+version: "1.0"
+
+columns:
+  genome_id:
+    type: string
+    required: true
+
+  feature_type:
+    type: string
+    required: true
+    enum: [CRISPR_spacer]
+
+  ID:
+    type: string
+    required: true
+    pattern: "^{genome_id}__CRA\\d{4}_sp\\d{3}$"
+    description: Spacer ID derived from parent array
+
+  Parent:
+    type: string
+    required: true
+    description: Parent array ID
+
+  contig:
+    type: string
+    required: true
+
+  start:
+    type: integer
+    required: true
+    min: 1
+
+  end:
+    type: integer
+    required: true
+    min: 1
+
+  strand:
+    type: string
+    required: true
+    enum: ["+", "-", "."]
+
+  spacer_idx:
+    type: integer
+    required: true
+    min: 1
+    description: Position within array (1-indexed)
+
+  sequence:
+    type: string
+    required: true
+    pattern: "^[ACGTN]+$"
+
+  length:
+    type: integer
+    required: true
+    min: 1
+
+derived_columns:
+  lcc_score:
+    added_by: 01_crispr_filtering
+    type: float
+
+  cluster_id:
+    added_by: 04_crispr_clustering
+    description: Cross-genome spacer cluster
+
+  is_representative:
+    added_by: 04_crispr_clustering
+    type: boolean

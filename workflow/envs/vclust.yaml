@@ -1,0 +1,11 @@
+name: vclust
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python>=3.10
+  - vclust
+  - biopython
+  - pandas
+

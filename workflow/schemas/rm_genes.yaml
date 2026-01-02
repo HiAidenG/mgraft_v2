@@ -1,0 +1,97 @@
+name: rm_genes
+description: Individual RM system genes
+version: "1.0"
+
+columns:
+  genome_id:
+    type: string
+    required: true
+
+  feature_type:
+    type: string
+    required: true
+    enum: [RM_gene]
+
+  ID:
+    type: string
+    required: true
+    pattern: "^{genome_id}__RMG\\d{4}$"
+
+  Parent:
+    type: string
+    required: true
+    description: Parent RM system ID
+
+  contig:
+    type: string
+    required: true
+
+  start:
+    type: integer
+    required: true
+    min: 1
+
+  end:
+    type: integer
+    required: true
+    min: 1
+
+  strand:
+    type: string
+    required: true
+    enum: ["+", "-", "."]
+
+  subunit:
+    type: string
+    required: true
+    enum: [S, R, M, RM]
+    description: Gene function (S=specificity, R=restriction, M=methylation)
+
+  gene_name:
+    type: string
+    required: false
+    description: Subunit classification (S, R, M, or RM) derived from DefenseFinder gene_name patterns
+
+  prodigal_id:
+    type: string
+    required: true
+    description: |
+      Protein identifier from Prodigal/Pyrodigal gene calling output.
+      Format: {contig}_{gene_position} matching protein FASTA headers.
+      Example: 'JBKVBU010000002.1_494' (contig JBKVBU010000002.1, gene 494)
+      Used for:
+        - Linking to REBASE/VFDB alignment results (qseqid in Diamond output)
+        - Extracting protein sequences from FASTA via seqkit grep
+        - Tracing genes back to original protein FASTA
+      Source: hit_id field from DefenseFinder genes output
+
+derived_columns:
+  REBASE_recseq:
+    added_by: 03_rm_annotation
+    description: Recognition sequence from REBASE alignment
+
+  REBASE_accession:
+    added_by: 03_rm_annotation
+
+  REBASE_pident:
+    added_by: 03_rm_annotation
+    type: float
+    min: 0
+    max: 100
+    description: Percent identity to REBASE hit
+
+  REBASE_evalue:
+    added_by: 03_rm_annotation
+    type: float
+    description: E-value of REBASE alignment
+
+  REBASE_qcov:
+    added_by: 03_rm_annotation
+    type: float
+    min: 0
+    max: 100
+    description: Query coverage of REBASE alignment
+
+  mge_id:
+    added_by: mge_overlap_notebook
+    description: ID of overlapping MGE (NULL if on chromosome)

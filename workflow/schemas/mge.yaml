@@ -1,0 +1,104 @@
+name: mge
+description: Mobile Genetic Elements from proMGE mge_islands.gff3
+version: "1.0"
+
+columns:
+  genome_id:
+    type: string
+    required: true
+
+  feature_type:
+    type: string
+    required: true
+    enum: [MGE]
+
+  ID:
+    type: string
+    required: true
+    pattern: "^{genome_id}__MGE\\d{4}$"
+    description: Deterministic MGE ID
+
+  tool_id:
+    type: string
+    required: true
+    description: |
+      Original MGE identifier from proMGE output.
+      Format: MGE_{genome_id}_{contig}:{start}-{end}
+      Used for provenance tracking back to proMGE output.
+      Source: ID attribute from mge_islands.gff3
+
+  contig:
+    type: string
+    required: true
+
+  start:
+    type: integer
+    required: true
+    min: 1
+
+  end:
+    type: integer
+    required: true
+    min: 1
+
+  strand:
+    type: string
+    required: true
+    enum: ["+", "-", "."]
+
+  mge_type:
+    type: string
+    required: true
+    enum: [nested, non-nested]
+    description: |
+      Whether this MGE contains another MGE (nested) or not.
+      Nested MGEs are clustered separately from non-nested.
+
+  mge_class:
+    type: string
+    required: true
+    description: |
+      MGE classification from proMGE.
+      Values: is_tn (insertion sequence/transposon), ce (conjugative element),
+              phage, mi (mobile integron), or combinations.
+
+  size:
+    type: integer
+    required: true
+    min: 1
+    description: MGE island size in bp
+
+  n_genes:
+    type: integer
+    required: true
+    min: 0
+    description: Number of genes in MGE island
+
+  recombinase_type:
+    type: string
+    required: false
+    description: |
+      Recombinase type(s) with counts, e.g. "int_ctndot:2,mob_pre:1"
+      Source: mgeR attribute from mge_islands.gff3
+
+  recombinase_ids:
+    type: string
+    required: false
+    description: |
+      Comma-separated prodigal gene IDs for recombinase genes.
+      Used to extract nucleotide sequences from FFN for clustering.
+      Example: "contig_123,contig_456"
+
+derived_columns:
+  cluster_id:
+    added_by: 07_mge_clustering
+    type: string
+    description: |
+      Cluster representative ID from whole-sequence deduplication.
+      MGEs with ANI >= 95% and qcov/tcov >= 80% share the same cluster_id.
+
+  n_cluster_members:
+    added_by: 07_mge_clustering
+    type: integer
+    description: Number of MGEs in this cluster
+

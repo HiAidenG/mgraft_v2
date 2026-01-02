@@ -1,0 +1,70 @@
+name: defense_systems
+description: Non-RM, non-Cas defense systems from DefenseFinder
+version: "1.0"
+
+columns:
+  genome_id:
+    type: string
+    required: true
+
+  feature_type:
+    type: string
+    required: true
+    enum: [defense_system]
+
+  ID:
+    type: string
+    required: true
+    pattern: "^{genome_id}__DEF\\d{4}$"
+
+  contig:
+    type: string
+    required: true
+
+  start:
+    type: integer
+    required: true
+    min: 1
+
+  end:
+    type: integer
+    required: true
+    min: 1
+
+  strand:
+    type: string
+    required: true
+    enum: ["+", "-", "."]
+
+  defense_type:
+    type: string
+    required: true
+    description: "e.g., Gabija, Zorya, BREX"
+
+  defense_subtype:
+    type: string
+    required: false
+
+  sys_wholeness:
+    type: float
+    required: true
+    min: 0
+    max: 1
+    description: Fraction of expected genes present (1.0 = complete)
+
+  n_genes:
+    type: integer
+    required: true
+    min: 1
+
+derived_columns:
+  mge_id:
+    added_by: mge_overlap_notebook
+    description: ID of overlapping MGE (NULL if on chromosome)
+
+  mobility_score:
+    added_by: mge_overlap_notebook
+    type: float
+    min: 0
+    max: 1
+    description: Highest fraction of system genes on any single MGE

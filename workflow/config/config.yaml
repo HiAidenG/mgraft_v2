@@ -1,0 +1,94 @@
+# mgraft_v2 Configuration
+# ======================== Required Paths ========================
+
+# Output directory for all results
+output_dir: "results"
+
+# Retain intermediate files (parsed/, crispr-filtering/, linked-annotations/, etc.)
+retain_intermediates: true
+
+# Path to samplesheet TSV file
+# Required columns: sample, genome
+# Optional columns: protein_fasta (or runs Pyrodigal), mges (or skips target mapping)
+samplesheet: "dev/mge_test_samplesheet.tsv"
+
+# ======================== Database Paths ========================
+# Setup with: bash workflow/resources/setup_databases.sh
+
+# REBASE protein database (DIAMOND format)
+rebase_db: "workflow/resources/databases/rebase/rebase.dmnd"
+
+# VFDB protein database (DIAMOND format)
+vfdb_db: "workflow/resources/databases/vfdb/vfdb.dmnd"
+
+# ======================== DefenseFinder ========================
+# NOTE: See README.md for manual setup instructions
+defensefinder:
+  # Path to manually created conda environment (see README.md)
+  conda_env: "/home/aiden/miniconda3/envs/defensefinder"
+  threads: 4
+  mem_mb: 4000
+  runtime: 60
+
+# ======================== CRISPR Settings ========================
+crispr:
+  # Path to CRISPRDetect3 script (install via scripts/database/install_crisprdetect.sh)
+  crisprdetect_path: "workflow/resources/crisprdetect/CRISPRDetect_3.0/CRISPRDetect3"
+  crisprdetect_env: "crisprdetect3"
+  
+  # CRISPRDetect parameters
+  quality_cutoff: 0
+  min_repeats: 2
+  
+  # Batch processing for fragmented genomes (MAGs)
+  # Set to 0 to disable batching (process all contigs at once)
+  batch_size: 200  # Max contigs per batch
+  
+  # Filtering thresholds
+  spacer_min_length: 20
+  spacer_max_length: 55
+  repeat_min_length: 20
+  repeat_max_length: 60
+  lcc_threshold: 0.8
+  
+  # Clustering (cross-sample)
+  spacer_cluster_identity: 0.95
+  repeat_cluster_identity: 0.90
+  
+  # Array-Cas linking
+  max_distance_to_cas: 10000
+  
+  threads: 4
+  mem_mb: 8000
+  runtime: 60
+
+# ======================== REBASE Alignment ========================
+rebase:
+  threads: 4
+  min_identity: 100.0
+  min_query_coverage: 90.0
+  min_subject_coverage: 90.0
+  evalue: 1e-10
+
+# ======================== VFDB Alignment ========================
+vfdb:
+  threads: 4
+  min_identity: 95.0
+  min_query_coverage: 85.0
+  min_subject_coverage: 85.0
+  evalue: 1e-5
+
+# ======================== MGE Settings ========================
+mge:
+  # Whole-sequence deduplication thresholds
+  ani: 0.95       # Average Nucleotide Identity threshold
+  qcov: 0.80      # Query coverage threshold
+  rcov: 0.80      # Reference coverage threshold
+  threads: 8
+
+# ======================== Target Mapping ========================
+target_mapping:
+  min_spacer_identity: 90
+  min_spacer_coverage: 100
+  max_mismatches: 2
+  threads: 4

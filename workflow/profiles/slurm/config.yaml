@@ -1,0 +1,47 @@
+name: slurm
+
+# SLURM executor plugin
+executor: slurm
+
+# Default resources for all rules
+default-resources:
+  mem_mb: 8000
+  runtime: 60  # minutes
+  threads: 1
+
+# Resource overrides per rule pattern
+set-resources:
+  defensefinder:
+    mem_mb: 16000
+    runtime: 120
+    threads: 4
+  crisprdetect:
+    mem_mb: 8000
+    runtime: 60
+    threads: 4
+  mge_cluster:
+    mem_mb: 32000
+    runtime: 240
+    threads: 8
+  crispr_cluster:
+    mem_mb: 16000
+    runtime: 120
+    threads: 4
+  query_vfdb:
+    mem_mb: 16000
+    runtime: 60
+    threads: 4
+  query_rebase:
+    mem_mb: 16000
+    runtime: 60
+    threads: 4
+
+# Job submission settings
+jobs: 100  # Max concurrent jobs
+latency-wait: 60  # Wait for output files (NFS)
+use-conda: true
+rerun-incomplete: true
+keep-going: true
+
+# Logging
+printshellcmds: true

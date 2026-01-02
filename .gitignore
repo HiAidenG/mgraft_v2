@@ -1,2 +1,11 @@
 databases/
 tools/
+.snakemake/
+.agent-instructions/
+test-set/
+test_samplesheet.tsv
+workflow/resources/databases
+workflow/resources/crisprdetect
+dev/
+results/
+

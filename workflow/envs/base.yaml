@@ -1,0 +1,13 @@
+name: mgraft_base
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.10
+  - pandas
+  - numpy
+  - biopython
+  - seqkit>=2.0
+  - blast>=2.12
+  - diamond>=2.0

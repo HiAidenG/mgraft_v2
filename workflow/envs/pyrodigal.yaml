@@ -1,0 +1,8 @@
+name: mgraft_pyrodigal
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - pyrodigal>=3.0
+  - python>=3.10

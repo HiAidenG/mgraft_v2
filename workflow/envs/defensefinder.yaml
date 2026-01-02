@@ -1,0 +1,13 @@
+name: mgraft_defensefinder
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python>=3.10,<3.12
+  - pandas>=1.5
+  - biopython>=1.79
+  - hmmer>=3.3
+  - pip
+  - pip:
+    - mdmparis-defense-finder>=2.0.0

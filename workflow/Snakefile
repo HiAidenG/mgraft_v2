@@ -1,0 +1,59 @@
+# mgraft_v2 workflow
+# Main entry point
+
+import sys
+from pathlib import Path
+
+# Config
+configfile: "config/config.yaml"
+
+OUTPUT_DIR = config.get("output_dir", "results")
+LOGS_DIR = f"{OUTPUT_DIR}/logs"
+
+# Include common functions (must be moved to workflow/rules/common.smk)
+include: "rules/common.smk"
+
+# Load samplesheet
+SAMPLESHEET = load_samplesheet(config["samplesheet"])
+SAMPLES = list(SAMPLESHEET.keys())
+# Helper to parse boolean config values
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if str(v).lower() in ("yes", "true", "t", "1"):
+        return True
+    return False
+
+# Detect features
+HAS_PROTEINS = has_proteins(SAMPLESHEET)
+HAS_MGES = has_mges(SAMPLESHEET)
+
+# Validation
+if not HAS_PROTEINS:
+    include: "rules/gene_calling.smk"
+else:
+    print("Pre-computed proteins detected. Skipping gene calling.", file=sys.stderr)
+
+# Update config with runtime detections
+# Priority: CLI config > Auto-detection
+if "run_mge" in config:
+    config["run_mge"] = str2bool(config["run_mge"])
+else:
+    config["run_mge"] = HAS_MGES
+
+# Rules
+include: "rules/annotation.smk"    # DefenseFinder, CRISPRDetect, REBASE
+include: "rules/vfdb.smk"          # VFDB (Legacy rule, moved)
+include: "rules/processing.smk"     # CRISPR filtering, linking, clustering, GFF
+include: "rules/mge_processing.smk" # MGE parsing (Legacy rule, moved)
+include: "rules/target_mapping.smk" # Target mapping (Legacy rule, moved)
+
+# Targets
+rule all:
+    input:
+        # Final Summary
+        OUTPUT_DIR + "/summary/genome_summary.tsv",        
+        
+        # Final GFFs
+        expand(OUTPUT_DIR + "/{sample}/all_features.gff", sample=SAMPLES),
+

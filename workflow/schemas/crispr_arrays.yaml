@@ -1,0 +1,108 @@
+name: crispr_arrays
+description: CRISPR array features parsed from CRISPR detection tools
+version: "1.0"
+
+columns:
+  genome_id:
+    type: string
+    required: true
+    description: Genome identifier from samplesheet
+
+  feature_type:
+    type: string
+    required: true
+    enum: [CRISPR_array]
+    description: Always 'CRISPR_array' for this schema
+
+  ID:
+    type: string
+    required: true
+    pattern: "^{genome_id}__CRA\\d{4}$"
+    description: Deterministic array ID
+
+  contig:
+    type: string
+    required: true
+    description: Contig/chromosome name
+
+  start:
+    type: integer
+    required: true
+    min: 1
+    description: 1-based inclusive start coordinate
+
+  end:
+    type: integer
+    required: true
+    min: 1
+    description: 1-based inclusive end coordinate
+
+  strand:
+    type: string
+    required: true
+    enum: ["+", "-", "."]
+    description: Strand orientation or unknown
+
+  n_spacers:
+    type: integer
+    required: true
+    min: 0
+    description: Number of spacers in array
+
+  n_repeats:
+    type: integer
+    required: true
+    min: 0
+    description: Number of repeats in array
+
+  repeat_sequence:
+    type: string
+    required: true
+    pattern: "^[ACGTN]+$"
+    description: Consensus repeat sequence
+
+  repeat_length:
+    type: integer
+    required: true
+    min: 1
+    description: Length of consensus repeat
+
+  array_quality:
+    type: float
+    required: false
+    min: 0
+    description: Quality score from CRISPR detection tool (tool-dependent metric)
+
+  tool_id:
+    type: string
+    required: false
+    description: Original ID from detection tool
+
+  tool_name:
+    type: string
+    required: false
+    description: Name of tool that detected array (e.g., CRISPRDetect, CRISPRCasFinder)
+
+# Added by notebooks (not parser)
+derived_columns:
+  lcc_score:
+    added_by: 01_crispr_filtering
+    type: float
+    description: Low-complexity score for repeat
+
+  linked_cas_id:
+    added_by: 02_array_cas_linking
+    description: ID of linked Cas system (NULL if orphan)
+
+  array_class:
+    added_by: 02_array_cas_linking
+    enum: [canonical, orphan, putative]
+    description: Classification based on Cas linkage
+
+  repeat_cluster_id:
+    added_by: 04_crispr_clustering
+    description: Cluster ID for repeat sequence
+
+  mge_id:
+    added_by: 08_mge_overlap
+    description: ID of overlapping MGE (NULL if on chromosome)
