@@ -17,9 +17,6 @@ pip install mdmparis-defense-finder==2.0.1
 # 3. update defense-finder models
 defense-finder update
 
-# 3. Install defense-finder-models (will skip CasFinder since it exists)
-defense-finder update
-
 # 4. Manually install CasFinder 3.1.0
 cd ~/.macsyfinder/models && rm -rf CasFinder 
 git clone https://github.com/macsy-models/CasFinder.git && cd CasFinder && git checkout 3.1.0
