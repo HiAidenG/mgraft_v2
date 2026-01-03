@@ -42,6 +42,7 @@ set-resources:
 jobs: 100  # Max concurrent jobs
 latency-wait: 60  # Wait for output files (NFS)
 retries: 3
+rerun-triggers: mtime
 use-conda: true
 rerun-incomplete: true
 keep-going: true
