@@ -14,7 +14,7 @@ rule pyrodigal:
         OUTPUT_DIR + "/logs/{sample}/pyrodigal.log"
     conda:
         "../envs/pyrodigal.yaml"
-    threads: 1
+    threads: 4
     resources:
         mem_mb = 4000,
         runtime = 30
@@ -22,6 +22,7 @@ rule pyrodigal:
         """
         mkdir -p $(dirname {output.proteins})
         pyrodigal -i {input.genome} \
+            -j {threads} \
             -a {output.proteins} \
             -d {output.genes} \
             -o {output.gff} \

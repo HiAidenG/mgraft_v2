@@ -9,6 +9,10 @@ default-resources:
 
 # Resource overrides per rule pattern
 set-resources:
+  pyrodigal:
+    mem_mb: 8000
+    runtime: 120
+    threads: 8
   defensefinder:
     mem_mb: 16000
     runtime: 120
@@ -37,6 +41,7 @@ set-resources:
 # Job submission settings
 jobs: 100  # Max concurrent jobs
 latency-wait: 60  # Wait for output files (NFS)
+retries: 3
 use-conda: true
 rerun-incomplete: true
 keep-going: true
