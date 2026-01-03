@@ -87,10 +87,13 @@ def filter_spacers_by_lcc(spacers_df, threshold):
     Returns:
         Tuple of (filtered_df, count removed)
     """
+    spacers_df = spacers_df.copy()
+    
+    # Always add lcc_score column for schema consistency, even if empty
     if spacers_df.empty:
+        spacers_df['lcc_score'] = pd.Series(dtype=float)
         return spacers_df, 0
     
-    spacers_df = spacers_df.copy()
     spacers_df['lcc_score'] = spacers_df['sequence'].apply(
         lambda x: calculate_lcc(str(x)) if pd.notna(x) and x != 'NULL' else 0.0
     )
